@@ -4,25 +4,23 @@
 
 using std::vector;
 
-int binary_search(const vector<int> &a, int x) {
-  int left = 0, right = (int)a.size();
-  if (right == 1 && x != a[0]) { return -1; }
+int binary_search(const vector<int> &a, int low, int high, int key) {
 
-  if (x >= 1) {
-    int mid = int(right / 2);
-
-    if (x == a[mid]) {
-      return mid;
-    } else if (x > a[mid]) {
-      vector<int>highsplit(a.begin() + mid, a.end());
-      return binary_search(highsplit, x) + mid;
-    } else if (x < a[mid]) {
-      vector<int>lowsplit(a.begin(), a.begin() + mid);
-      return binary_search(lowsplit, x);
+    if (high < low) {
+        return -1;
+    } else if (a.size() == 1 && key != a[0]) {
+        return -1;
+    } else {
+        int mid = low + ((high - low)/ 2);
+        if (key == a[mid]) {
+            return mid;
+        } else if (key < a[mid]) {
+            return binary_search(a, low, mid - 1, key);
+        } else {
+            return binary_search(a, mid + 1, high, key);
+        }
     }
 
-  }
-  return -1;
 }
 
 int linear_search(const vector<int> &a, int x) {
@@ -47,7 +45,6 @@ int main() {
   }
   for (int i = 0; i < m; ++i) {
     //replace with the call to binary_search when implemented
-    std::cout << binary_search(a, b[i]) << ' ';
+    std::cout << binary_search(a, 0, (a.size() - 1), b[i]) << ' ';
   }
-//  std::cout << std::endl;
 }
